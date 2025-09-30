@@ -41,4 +41,15 @@ async function deleteUser(userId) {
   }
 }
 
-export default { findUserByMail, addNewUser, deleteUser };
+async function updatePassword(mail, newPassword) {
+  const UPDATE = "UPDATE users SET password = ? WHERE mail = ?";
+  try {
+    const result = await connection.query(UPDATE, [newPassword, mail]);
+    return result[0];
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
+export default { findUserByMail, addNewUser, deleteUser, updatePassword };

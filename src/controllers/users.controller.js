@@ -73,4 +73,24 @@ async function deleteAccount(req, res, next) {
   }
 }
 
-export default { registerUser, loginUser, deleteAccount };
+async function modifyPassword(req, res, next) {
+  const userData = req.body;
+  try {
+    const passwordModified = await usersService.compareAndModifyPassword(
+      userData
+    );
+
+    return passwordModified
+      ? res
+          .status(200)
+          .json({ success: true, message: "Mot de passe modifié avec succès" })
+      : res
+          .status(400)
+          .json({ success: false, message: "La modification a échoué" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ succes: false, message: "Erreur serveur" });
+  }
+}
+
+export default { registerUser, loginUser, deleteAccount, modifyPassword };

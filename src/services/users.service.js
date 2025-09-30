@@ -37,4 +37,32 @@ async function compareUserPassword(loginId) {
   }
 }
 
-export default { hashNewUserPassword, compareUserPassword };
+async function compareAndModifyPassword(userData) {
+  try {
+    const rigthPassword = await compareUserPassword(userData);
+
+    if (!rigthPassword) {
+      return null;
+    }
+
+    const hashedNewPassword = await useBcrypt.hashPassword(
+      userData.newpassword
+    );
+
+    const passwordUpdated = await usersRepository.updatePassword(
+      userData.mail,
+      hashedNewPassword
+    );
+
+    return passwordUpdated.affectedRows > 0 ? true : false;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
+export default {
+  hashNewUserPassword,
+  compareUserPassword,
+  compareAndModifyPassword,
+};
