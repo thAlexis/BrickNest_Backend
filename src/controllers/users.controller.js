@@ -54,10 +54,19 @@ async function loginUser(req, res, next) {
   }
 }
 
+///////////////// SUPPRESSION DE COMPTE ////////////////
 async function deleteAccount(req, res, next) {
   const userId = req.params.id;
   try {
-    const deleted = usersRepository.deleteUser(userId);
+    const deleted = await usersRepository.deleteUser(userId);
+    return deleted.affectedRows > 0
+      ? res
+          .status(200)
+          .json({ success: true, message: "Le compte a été supprimé" })
+      : res.status(400).json({
+          success: false,
+          message: "Le compte ciblé n'a pas été supprimé",
+        });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ success: false, message: "Erreur serveur" });

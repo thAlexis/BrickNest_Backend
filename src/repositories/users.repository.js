@@ -34,8 +34,7 @@ async function deleteUser(userId) {
   const DELETE = "DELETE FROM users WHERE id = ?";
   try {
     const result = await connection.query(DELETE, userId);
-    console.log(result);
-    return result;
+    return result[0];
   } catch (err) {
     console.log(err);
     return null;
