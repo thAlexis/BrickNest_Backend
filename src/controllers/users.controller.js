@@ -27,4 +27,29 @@ async function registerUser(req, res, next) {
   }
 }
 
-export default { registerUser };
+async function loginUser(req, res, next) {
+  const loginId = req.body;
+
+  try {
+    const userConnected = await usersService.compareUserPassword(loginId);
+
+    return userConnected
+      ? res.status(200).json({
+          success: true,
+          message: "Connexion réussie",
+          id: userConnected.id,
+          username: userConnected.username,
+          mail: userConnected.mail,
+          firstname: userConnected.firstname,
+          lastname: userConnected.lastname,
+        })
+      : res
+          .status(400)
+          .json({ success: false, message: "Identifiants incorrects" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ success: false, message: "Erreur serveur" });
+  }
+}
+
+export default { registerUser, loginUser };

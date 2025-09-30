@@ -12,4 +12,29 @@ async function hashNewUserPassword(newUser) {
   }
 }
 
-export default { hashNewUserPassword };
+async function compareUserPassword(loginId) {
+  try {
+    const user = await usersRepository.findUserByMail(loginId.mail);
+
+    if (!user) {
+      return null;
+    }
+
+    const rigthPassword = await useBcrypt.verifyPassword(
+      loginId.password,
+      user.password
+    );
+
+    console.log(rigthPassword);
+
+    if (rigthPassword) {
+      return user;
+    }
+    return null;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
+export default { hashNewUserPassword, compareUserPassword };
