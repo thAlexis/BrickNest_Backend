@@ -51,7 +51,7 @@ async function compareAndModifyPassword(userData) {
 
     const passwordUpdated = await usersRepository.updatePassword(
       userData.mail,
-      hashNewUserPassword
+      hashedNewPassword
     );
 
     return passwordUpdated.affectedRows > 0 ? true : false;
