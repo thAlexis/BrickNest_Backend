@@ -18,13 +18,13 @@ CREATE TABLE lego_sets (
   img_link VARCHAR(300)
 );
 
-LOAD DATA LOCAL INFILE '/Users/alexisthullier/Desktop/BrickNest/sets.csv'
+LOAD DATA LOCAL INFILE '/Users/alexisthullier/Desktop/BrickNest/backend/src/db/sets.csv'
 INTO TABLE lego_sets
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n';
 
 
-LOAD DATA LOCAL INFILE '/Users/alexisthullier/Desktop/BrickNest/themes.csv'
+LOAD DATA LOCAL INFILE '/Users/alexisthullier/Desktop/BrickNest/backend/src/db/themes.csv'
 INTO TABLE lego_themes
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n';
@@ -32,7 +32,9 @@ LINES TERMINATED BY '\n';
 CREATE TABLE users (
   id INT PRIMARY KEY AUTO_INCREMENT,
   username VARCHAR(30),
-  email VARCHAR(128),
+  firstname VARCHAR(30),
+  lastname VARCHAR(30),
+  mail VARCHAR(128) UNIQUE,
   password VARCHAR(128),
   role VARCHAR(20)
 );
