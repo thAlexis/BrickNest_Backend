@@ -2,6 +2,7 @@
 import express from "express";
 import "dotenv/config";
 import cors from "cors";
+import connection from "./config/db.config.js";
 
 /////////// Configuration //////////////
 const app = express();
