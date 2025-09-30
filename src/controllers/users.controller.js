@@ -1,6 +1,7 @@
 import usersRepository from "../repositories/users.repository.js";
 import usersService from "../services/users.service.js";
 
+/////////////////// INSCRIPTION ////////////////////////
 async function registerUser(req, res, next) {
   const newUser = req.body;
 
@@ -27,6 +28,7 @@ async function registerUser(req, res, next) {
   }
 }
 
+///////////////////// AUTHENTIFICATION /////////////////////
 async function loginUser(req, res, next) {
   const loginId = req.body;
 
