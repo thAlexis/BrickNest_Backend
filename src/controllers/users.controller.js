@@ -54,4 +54,14 @@ async function loginUser(req, res, next) {
   }
 }
 
-export default { registerUser, loginUser };
+async function deleteAccount(req, res, next) {
+  const userId = req.params.id;
+  try {
+    const deleted = usersRepository.deleteUser(userId);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ success: false, message: "Erreur serveur" });
+  }
+}
+
+export default { registerUser, loginUser, deleteAccount };
