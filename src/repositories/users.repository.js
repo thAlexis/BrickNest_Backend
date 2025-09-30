@@ -30,4 +30,16 @@ async function addNewUser(newUser, hashedPassword) {
   }
 }
 
-export default { findUserByMail, addNewUser };
+async function deleteUser(userId) {
+  const DELETE = "DELETE FROM users WHERE id = ?";
+  try {
+    const result = await connection.query(DELETE, userId);
+    console.log(result);
+    return result;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
+export default { findUserByMail, addNewUser, deleteUser };
