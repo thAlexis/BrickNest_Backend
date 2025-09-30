@@ -4,7 +4,8 @@ async function findUserByMail(mail) {
   const SELECT = "SELECT * FROM users WHERE mail = ?";
   try {
     const found = await connection.query(SELECT, mail);
-    return result[0] || null;
+    console.log(found[0]);
+    return found[0][0] || null;
   } catch (error) {
     console.log(error);
     return null;
@@ -14,7 +15,7 @@ async function findUserByMail(mail) {
 async function addNewUser(newUser, hashedPassword) {
   const INSERT = `INSERT INTO users (username, firstname, lastname, mail, password, role) VALUES (?, ?, ?, ?, ?, "user")`;
   try {
-    const result = await connection.query(INSERT, [
+    const [result] = await connection.query(INSERT, [
       newUser.username,
       newUser.firstname,
       newUser.lastname,
