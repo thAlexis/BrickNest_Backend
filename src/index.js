@@ -4,6 +4,9 @@ import "dotenv/config";
 import cors from "cors";
 import connection from "./config/db.config.js";
 
+/////////// Routes imports ////////////////
+import registerRouter from "./routes/register.route.js";
+
 /////////// Configuration //////////////
 const app = express();
 
@@ -16,6 +19,9 @@ app.use(
     allowedHeaders: ["Content-Type", "Accept", "Authorization"],
   })
 );
+
+/////////// Use Routes ////////////
+app.use("/register", registerRouter);
 
 ////////// Local Host Configuration //////////
 const PORT = process.env.PORT || 5555;
