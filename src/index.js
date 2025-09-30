@@ -6,6 +6,7 @@ import connection from "./config/db.config.js";
 
 /////////// Routes imports ////////////////
 import registerRouter from "./routes/register.route.js";
+import loginRouter from "./routes/login.route.js";
 
 /////////// Configuration //////////////
 const app = express();
@@ -22,6 +23,7 @@ app.use(
 
 /////////// Use Routes ////////////
 app.use("/register", registerRouter);
+app.use("/login", loginRouter);
 
 ////////// Local Host Configuration //////////
 const PORT = process.env.PORT || 5555;
