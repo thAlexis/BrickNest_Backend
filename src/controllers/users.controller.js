@@ -97,17 +97,19 @@ async function modifyPassword(req, res, next) {
 //////////////// MODIF INFOS COMPTE //////////////////
 async function modifyAccount(req, res, next) {
   const newAccountInfos = req.body;
+  newAccountInfos.newmail =
+    newAccountInfos.newmail == ""
+      ? newAccountInfos.mail
+      : newAccountInfos.newmail;
 
   try {
     const accountModified = await usersRepository.updateUser(newAccountInfos);
 
-    return newAccountInfos.affectedRows > 0
-      ? res
-          .status(200)
-          .json({
-            success: true,
-            message: "Informations modifiées avec succès",
-          })
+    return accountModified.affectedRows > 0
+      ? res.status(200).json({
+          success: true,
+          message: "Informations modifiées avec succès",
+        })
       : res
           .status(400)
           .json({ success: false, message: "Modification refusée" });
