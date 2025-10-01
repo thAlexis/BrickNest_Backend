@@ -52,4 +52,29 @@ async function updatePassword(mail, newPassword) {
   }
 }
 
-export default { findUserByMail, addNewUser, deleteUser, updatePassword };
+async function updateUser(newAccountInfos) {
+  const UPDATE =
+    "UPDATE users SET username = ?, firstname = ?, lastname = ?, mail = ? WHERE mail = ?";
+  try {
+    console.log(newAccountInfos);
+    const result = await connection.query(UPDATE, [
+      newAccountInfos.username,
+      newAccountInfos.firstname,
+      newAccountInfos.lastname,
+      newAccountInfos.newmail,
+      newAccountInfos.mail,
+    ]);
+    return result[0];
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
+export default {
+  findUserByMail,
+  addNewUser,
+  deleteUser,
+  updatePassword,
+  updateUser,
+};
