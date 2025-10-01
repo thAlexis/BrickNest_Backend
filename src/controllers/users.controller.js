@@ -73,6 +73,7 @@ async function deleteAccount(req, res, next) {
   }
 }
 
+//////////////// MODIF PASSWORD SI ANCIEN PASSWORD EST OK ///////////
 async function modifyPassword(req, res, next) {
   const userData = req.body;
   try {
@@ -93,4 +94,15 @@ async function modifyPassword(req, res, next) {
   }
 }
 
-export default { registerUser, loginUser, deleteAccount, modifyPassword };
+//////////////// MODIF INFOS COMPTE //////////////////
+async function modifyAccount(req, res, next) {
+  const newAccountInfos = req.body;
+}
+
+export default {
+  registerUser,
+  loginUser,
+  deleteAccount,
+  modifyPassword,
+  modifyAccount,
+};
