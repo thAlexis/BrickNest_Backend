@@ -31,6 +31,7 @@ async function registerUser(req, res, next) {
 ///////////////////// AUTHENTIFICATION /////////////////////
 async function loginUser(req, res, next) {
   const loginId = req.body;
+  console.log(`ID de connexion : ${loginId}`);
 
   try {
     const userConnected = await usersService.compareUserPassword(loginId);
