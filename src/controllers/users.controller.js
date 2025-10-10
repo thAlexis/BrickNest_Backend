@@ -11,7 +11,10 @@ async function registerUser(req, res, next) {
     if (alreadyExists) {
       return res
         .status(400)
-        .json({ success: false, message: "Utilisateur déjà existant" });
+        .json({
+          success: false,
+          message: "Cette adresse mail est déjà utilisée",
+        });
     }
 
     /////// register new user /////
