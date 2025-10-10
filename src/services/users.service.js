@@ -1,5 +1,6 @@
 import usersRepository from "../repositories/users.repository.js";
 import useBcrypt from "../config/bcrypt.config.js";
+import jwt from "jsonwebtoken";
 
 async function hashNewUserPassword(newUser) {
   try {
@@ -28,7 +29,21 @@ async function compareUserPassword(loginId) {
     console.log(rigthPassword);
 
     if (rigthPassword) {
-      return user;
+      const payload = {
+        username: user.username,
+        mail: user.mail,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        role: user.role,
+      };
+
+      const token = jwt.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRES_IN,
+      });
+
+      console.log(token);
+
+      return token;
     }
     return null;
   } catch (err) {
