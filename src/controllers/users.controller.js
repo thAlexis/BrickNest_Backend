@@ -35,17 +35,13 @@ async function loginUser(req, res, next) {
   console.log(`ID de connexion : ${loginId}`);
 
   try {
-    const userConnected = await usersService.compareUserPassword(loginId);
+    const userToken = await usersService.compareUserPassword(loginId);
 
-    return userConnected
+    return userToken
       ? res.status(200).json({
           success: true,
           message: "Connexion réussie",
-          id: userConnected.id,
-          username: userConnected.username,
-          mail: userConnected.mail,
-          firstname: userConnected.firstname,
-          lastname: userConnected.lastname,
+          userToken,
         })
       : res
           .status(400)
