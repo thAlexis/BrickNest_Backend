@@ -4,6 +4,7 @@ import legoThemesRepository from "../repositories/legoThemes.repository.js";
 async function getMainThemes(req, res, next) {
   try {
     const mainThemes = await legoThemesRepository.selectMainThemes();
+    console.log(mainThemes);
     return mainThemes
       ? res.status(200).json({ mainThemes })
       : res.status(400).json({ message: "Aucun thème trouvé" });

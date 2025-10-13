@@ -9,6 +9,7 @@ import registerRouter from "./routes/register.route.js";
 import loginRouter from "./routes/login.route.js";
 import deleteRouter from "./routes/deleteAccount.route.js";
 import accountModificationRouter from "./routes/accountModification.route.js";
+import themesRouter from "./routes/themes.route.js";
 
 /////////// Configuration //////////////
 const app = express();
@@ -28,6 +29,7 @@ app.use("/register", registerRouter);
 app.use("/login", loginRouter);
 app.use("/deleteaccount", deleteRouter);
 app.use("/accountmodification", accountModificationRouter);
+app.use("/themes", themesRouter);
 
 ////////// Local Host Configuration //////////
 const PORT = process.env.PORT || 5555;
