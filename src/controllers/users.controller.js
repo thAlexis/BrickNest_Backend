@@ -9,12 +9,10 @@ async function registerUser(req, res, next) {
     ///// check if mail is already registered ///
     const alreadyExists = await usersRepository.findUserByMail(newUser.mail);
     if (alreadyExists) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Cette adresse mail est déjà utilisée",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Cette adresse mail est déjà utilisée",
+      });
     }
 
     /////// register new user /////
@@ -25,9 +23,9 @@ async function registerUser(req, res, next) {
       message: "Inscription réussie",
       id: addedUser.id,
     });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ success: false, message: "Erreur serveur" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Erreur serveur" });
   }
 }
 
