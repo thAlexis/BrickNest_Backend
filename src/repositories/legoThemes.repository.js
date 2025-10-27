@@ -11,4 +11,15 @@ async function selectMainThemes() {
   }
 }
 
-export default { selectMainThemes };
+async function getMainThemeIdByName(MainThemeName) {
+  const SELECT = "SELECT theme_id FROM lego_themes WHERE theme_name = ?";
+  try {
+    const mainThemeId = await connection.query(SELECT, MainThemeName);
+    return mainThemeId[0];
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+export default { selectMainThemes, getMainThemeIdByName };
