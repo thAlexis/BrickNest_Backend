@@ -23,9 +23,9 @@ async function registerUser(req, res, next) {
       message: "Inscription réussie",
       id: addedUser.id,
     });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ success: false, message: "Erreur serveur" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Erreur serveur" });
   }
 }
 
