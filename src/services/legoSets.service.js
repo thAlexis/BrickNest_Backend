@@ -1,17 +1,18 @@
 import legoSetsRepository from "../repositories/legoSets.repository.js";
-import legoThemesRepository from "../repositories/legoThemes.repository.js";
 
-async function getAllSetsByMainTheme(mainThemeName) {
+async function getAllSetsByMainTheme(mainThemeName, limit, offset) {
   try {
-    const mainThemeId = await legoThemesRepository.getMainThemeIdByName(
-      mainThemeName
-    );
-    if (!mainThemeId) return null;
-    const legoSets = await legoSetsRepository.getAllSetsByMainThemeId(
-      mainThemeId
+    const legoSets = await legoSetsRepository.getSetsByMainThemeId(
+      mainThemeName,
+      limit,
+      offset
     );
     if (!legoSets) return null;
-    return legoSets;
+
+    const total = await legoSetsRepository.getTotalSetsByTheme(mainThemeName);
+    const nbPages = Math.ceil(total / limit);
+
+    return [legoSets, total, nbPages];
   } catch (err) {
     console.log(err);
     return null;

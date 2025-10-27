@@ -1,10 +1,14 @@
 import connection from "../config/db.config.js";
 
-async function getAllSetsByMainThemeId(mainThemeId) {
+async function getSetsByMainThemeId(mainThemeName, limit, offset) {
   const SELECT =
-    "SELECT * FROM lego_sets JOIN lego_themes on lego_sets.theme_id = lego_themes.theme_id WHERE parent_id = ?";
+    "SELECT * FROM lego_sets JOIN lego_themes on lego_sets.theme_id = lego_themes.theme_id WHERE theme_name = ? LIMIT ? OFFSET ?";
   try {
-    const legoSets = await connection.query(SELECT, mainThemeId);
+    const legoSets = await connection.query(SELECT, [
+      mainThemeName,
+      limit,
+      offset,
+    ]);
     return legoSets[0];
   } catch (err) {
     console.log(err);
@@ -12,4 +16,16 @@ async function getAllSetsByMainThemeId(mainThemeId) {
   }
 }
 
-export default { getAllSetsByMainThemeId };
+async function getTotalSetsByTheme(mainThemeName) {
+  const SELECT =
+    "SELECT COUNT(*) AS total FROM lego_sets JOIN lego_themes on lego_sets.theme_id = lego_themes.theme_id WHERE theme_name = ?";
+  try {
+    const [[{ total }]] = await connection.query(SELECT, mainThemeName);
+    return total;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
+export default { getSetsByMainThemeId, getTotalSetsByTheme };
