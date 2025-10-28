@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-export default function verifyToken(req, res, next) {
+function verifyToken(req, res, next) {
   const bearerToken = req.headers.authorization;
 
   if (!bearerToken)
@@ -17,9 +17,11 @@ export default function verifyToken(req, res, next) {
   }
 }
 
-export default function verifyAdmin(req, res, next) {
-    if(req.user.role !== "admin") {
-        return res.status(403).json({message: "Accès refusé"})
-    }
-    next();
+function verifyAdmin(req, res, next) {
+  if (req.user.role !== "admin") {
+    return res.status(403).json({ message: "Accès refusé" });
+  }
+  next();
 }
+
+export default { verifyToken, verifyAdmin };
