@@ -3,7 +3,7 @@ import legoSetsService from "../services/legoSets.service.js";
 async function allSetsByMainTheme(req, res, next) {
   const mainThemeName = req.params.maintheme;
   const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 20;
+  const limit = 15;
   const offset = (page - 1) * limit;
   try {
     const [legoSets, total, nbPages] =
