@@ -25,4 +25,43 @@ async function sendSetToCollection(userMail, setNum) {
   }
 }
 
-export default { sendSetToCollection };
+async function selectAllSetsByUser(userMail) {
+  try {
+    const { id } = await usersRepository.findUserByMail(userMail);
+
+    if (!id) return null;
+
+    const allSetsInCollection = await userCollectionRepository.selectAllByUser(
+      id
+    );
+
+    return allSetsInCollection;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
+async function deleteFromCollection(userMail, setNum) {
+  try {
+    const { id } = await usersRepository.findUserByMail(userMail);
+
+    if (!id) return null;
+
+    const isDeleted = await userCollectionRepository.deleteSetFromCollection(
+      id,
+      setNum
+    );
+
+    return isDeleted;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
+export default {
+  sendSetToCollection,
+  selectAllSetsByUser,
+  deleteFromCollection,
+};

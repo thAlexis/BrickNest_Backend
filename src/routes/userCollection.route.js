@@ -9,5 +9,15 @@ router.post(
   jwtMiddlewares.verifyToken,
   userCollectionController.sendSetToCollection
 );
+router.get(
+  "/getsets",
+  jwtMiddlewares.verifyToken,
+  userCollectionController.getAllSetsInUserCollection
+);
+router.delete(
+  "/delete/:setnum",
+  jwtMiddlewares.verifyToken,
+  userCollectionController.deleteSetFromCollection
+);
 
 export default router;
