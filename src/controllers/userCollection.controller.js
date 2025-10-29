@@ -11,7 +11,7 @@ async function sendSetToCollection(req, res, next) {
 
     return setIsAdded
       ? res.status(201).json({ message: "Le set à été correctement ajouté" })
-      : res.status(400).json({ message: "Le set n'a pas pu être ajouté" });
+      : res.status(400).json({ message: "Le set n'a pas pus être ajouté" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Erreur serveur" });

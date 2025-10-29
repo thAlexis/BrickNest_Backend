@@ -7,6 +7,13 @@ async function sendSetToCollection(userMail, setNum) {
 
     if (!id) return null;
 
+    const alreadyAdedd = await userCollectionRepository.checkIfAlreadyAdded(
+      id,
+      setNum
+    );
+
+    if (alreadyAdedd) return null;
+
     const setIsAdded = await userCollectionRepository.addSetToCollec(
       id,
       setNum
