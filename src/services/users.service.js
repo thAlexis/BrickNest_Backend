@@ -38,7 +38,7 @@ async function compareUserPassword(loginId) {
       };
 
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES_IN,
+        expiresIn: "2h",
       });
 
       console.log(token);

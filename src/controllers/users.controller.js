@@ -48,7 +48,7 @@ async function loginUser(req, res, next) {
           .json({ success: false, message: "Identifiants incorrects" });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ success: false, message: "Erreur serveur" });
+    return res.status(500).json({ message: "Erreur serveur" });
   }
 }
 
@@ -67,7 +67,7 @@ async function deleteAccount(req, res, next) {
         });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ success: false, message: "Erreur serveur" });
+    return res.status(500).json({ message: "Erreur serveur" });
   }
 }
 
