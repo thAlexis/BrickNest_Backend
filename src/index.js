@@ -12,6 +12,7 @@ import accountModificationRouter from "./routes/accountModification.route.js";
 import themesRouter from "./routes/themes.route.js";
 import setsRouter from "./routes/legoSets.route.js";
 import userCollectionRouter from "../src/routes/userCollection.route.js";
+import userWishlistRouter from "../src/routes/userWishlist.route.js";
 
 /////////// Configuration //////////////
 const app = express();
@@ -34,6 +35,7 @@ app.use("/accountmodification", accountModificationRouter);
 app.use("/themes", themesRouter);
 app.use("/sets", setsRouter);
 app.use("/collection", userCollectionRouter);
+app.use("/wishlist", userWishlistRouter);
 
 ////////// Local Host Configuration //////////
 const PORT = process.env.PORT || 5555;

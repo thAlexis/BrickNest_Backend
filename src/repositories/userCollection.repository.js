@@ -11,19 +11,6 @@ async function addSetToCollec(userId, setNum) {
   }
 }
 
-async function checkIfAlreadyAdded(userId, setNum) {
-  const SELECT =
-    "SELECT * FROM users_collections WHERE user_id = ? AND set_num = ?";
-  try {
-    const alreadyAdded = await connection.query(SELECT, [userId, setNum]);
-    console.log(alreadyAdded[0][0]);
-    return alreadyAdded[0][0];
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
-}
-
 async function selectAllByUser(userId) {
   const SELECT = "SELECT set_num FROM users_collections WHERE user_id = ?";
   try {
@@ -61,7 +48,6 @@ async function getTotalSetsByUser(userId) {
 
 export default {
   addSetToCollec,
-  checkIfAlreadyAdded,
   selectAllByUser,
   deleteSetFromCollection,
   getTotalSetsByUser,

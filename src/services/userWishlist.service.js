@@ -1,14 +1,14 @@
-import userCollectionRepository from "../repositories/userCollection.repository.js";
+import userWishlistRepository from "../repositories/userWishlist.repository.js";
 import usersRepository from "../repositories/users.repository.js";
 import legoSetsRepository from "../repositories/legoSets.repository.js";
 
-async function sendSetToCollection(userMail, setNum) {
+async function sendSetToWishlist(userMail, setNum) {
   try {
     const { id } = await usersRepository.findUserByMail(userMail);
 
     if (!id) return null;
 
-    const setIsAdded = await userCollectionRepository.addSetToCollec(
+    const setIsAdded = await userWishlistRepository.addSetToWishlist(
       id,
       setNum
     );
@@ -25,7 +25,7 @@ async function selectAllSetsByUser(userMail) {
 
     if (!id) return null;
 
-    const allSetsInCollection = await userCollectionRepository.selectAllByUser(
+    const allSetsInCollection = await userWishlistRepository.selectAllByUser(
       id
     );
 
@@ -36,13 +36,13 @@ async function selectAllSetsByUser(userMail) {
   }
 }
 
-async function deleteFromCollection(userMail, setNum) {
+async function deleteFromWishlist(userMail, setNum) {
   try {
     const { id } = await usersRepository.findUserByMail(userMail);
 
     if (!id) return null;
 
-    const isDeleted = await userCollectionRepository.deleteSetFromCollection(
+    const isDeleted = await userWishlistRepository.deleteSetFromWishlist(
       id,
       setNum
     );
@@ -54,20 +54,20 @@ async function deleteFromCollection(userMail, setNum) {
   }
 }
 
-async function getSetsInCollection(userMail, limit, offset) {
+async function getSetsInWishlist(userMail, limit, offset) {
   try {
     const { id } = await usersRepository.findUserByMail(userMail);
 
     if (!id) return null;
 
-    const legoSets = await legoSetsRepository.getAllSetsInCollecByUserId(
+    const legoSets = await legoSetsRepository.getAllSetsInWishlistByUserId(
       id,
       limit,
       offset
     );
     if (!legoSets) return null;
 
-    const total = await userCollectionRepository.getTotalSetsByUser(id);
+    const total = await userWishlistRepository.getTotalSetsByUser(id);
     const nbPages = Math.ceil(total / limit);
 
     return [legoSets, total, nbPages];
@@ -78,8 +78,8 @@ async function getSetsInCollection(userMail, limit, offset) {
 }
 
 export default {
-  sendSetToCollection,
+  sendSetToWishlist,
   selectAllSetsByUser,
-  deleteFromCollection,
-  getSetsInCollection,
+  deleteFromWishlist,
+  getSetsInWishlist,
 };
