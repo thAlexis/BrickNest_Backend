@@ -47,9 +47,22 @@ async function deleteSetFromCollection(userID, setNum) {
   }
 }
 
+async function getTotalSetsByUser(userId) {
+  const SELECT =
+    "SELECT COUNT(*) AS total FROM users_collections WHERE user_id = ?";
+  try {
+    const [[{ total }]] = await connection.query(SELECT, userId);
+    return total;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
 export default {
   addSetToCollec,
   checkIfAlreadyAdded,
   selectAllByUser,
   deleteSetFromCollection,
+  getTotalSetsByUser,
 };

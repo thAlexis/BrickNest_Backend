@@ -10,14 +10,19 @@ router.post(
   userCollectionController.sendSetToCollection
 );
 router.get(
-  "/getsets",
+  "/getsetsnum",
   jwtMiddlewares.verifyToken,
-  userCollectionController.getAllSetsInUserCollection
+  userCollectionController.getAllSetsNumInUserCollection
 );
 router.delete(
   "/delete/:setnum",
   jwtMiddlewares.verifyToken,
   userCollectionController.deleteSetFromCollection
+);
+router.get(
+  "/getsets",
+  jwtMiddlewares.verifyToken,
+  userCollectionController.getAllSetsByUser
 );
 
 export default router;

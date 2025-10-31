@@ -18,7 +18,7 @@ async function sendSetToCollection(req, res, next) {
   }
 }
 
-async function getAllSetsInUserCollection(req, res, next) {
+async function getAllSetsNumInUserCollection(req, res, next) {
   const userMail = req.user.mail;
   try {
     const allSets = await userCollectionService.selectAllSetsByUser(userMail);
@@ -50,8 +50,33 @@ async function deleteSetFromCollection(req, res, next) {
   }
 }
 
+async function getAllSetsByUser(req, res, next) {
+  const userMail = req.user.mail;
+  const page = Number(req.query.page) || 1;
+  const limit = 12;
+  const offset = (page - 1) * limit;
+
+  try {
+    const [legoSets, total, nbPages] =
+      await userCollectionService.getSetsInCollection(userMail, limit, offset);
+
+    console.log(legoSets);
+    return legoSets
+      ? res.status(200).json({
+          page: page,
+          nbPages: nbPages,
+          totalSets: total,
+          sets: legoSets,
+        })
+      : res.status(404).json({ message: "Aucun set trouvé" });
+  } catch (err) {
+    return res.status(500).json({ message: "Erreur serveur" });
+  }
+}
+
 export default {
   sendSetToCollection,
-  getAllSetsInUserCollection,
+  getAllSetsNumInUserCollection,
   deleteSetFromCollection,
+  getAllSetsByUser,
 };

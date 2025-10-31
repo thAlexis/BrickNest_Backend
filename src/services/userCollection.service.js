@@ -1,5 +1,6 @@
 import userCollectionRepository from "../repositories/userCollection.repository.js";
 import usersRepository from "../repositories/users.repository.js";
+import legoSetsRepository from "../repositories/legoSets.repository.js";
 
 async function sendSetToCollection(userMail, setNum) {
   try {
@@ -60,8 +61,32 @@ async function deleteFromCollection(userMail, setNum) {
   }
 }
 
+async function getSetsInCollection(userMail, limit, offset) {
+  try {
+    const { id } = await usersRepository.findUserByMail(userMail);
+
+    if (!id) return null;
+
+    const legoSets = await legoSetsRepository.getAllSetsByUserId(
+      id,
+      limit,
+      offset
+    );
+    if (!legoSets) return null;
+
+    const total = await userCollectionRepository.getTotalSetsByUser(id);
+    const nbPages = Math.ceil(total / limit);
+
+    return [legoSets, total, nbPages];
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
 export default {
   sendSetToCollection,
   selectAllSetsByUser,
   deleteFromCollection,
+  getSetsInCollection,
 };

@@ -9,7 +9,7 @@ async function allSetsByMainTheme(req, res, next) {
     const [legoSets, total, nbPages] =
       await legoSetsService.getAllSetsByMainTheme(mainThemeName, limit, offset);
 
-    res
+    return res
       .status(200)
       .json({ page, nbPages: nbPages, totalSets: total, sets: legoSets });
   } catch (err) {
