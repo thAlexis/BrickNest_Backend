@@ -11,7 +11,7 @@ router.post(
 );
 
 router.get(
-  "/getsetnum",
+  "/getsetsnum",
   jwtMiddlewares.verifyToken,
   userWishlistController.getAllSetsNumInUserWishlist
 );
