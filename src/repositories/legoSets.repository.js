@@ -28,9 +28,21 @@ async function getTotalSetsByTheme(mainThemeName) {
   }
 }
 
-async function getAllSetsByUserId(userId, limit, offset) {
+async function getAllSetsInCollecByUserId(userId, limit, offset) {
   const SELECT =
     "SELECT * FROM lego_sets JOIN users_collections on lego_sets.set_num = users_collections.set_num WHERE user_id = ? LIMIT ? OFFSET ?";
+  try {
+    const legoSets = await connection.query(SELECT, [userId, limit, offset]);
+    return legoSets[0];
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
+async function getAllSetsInWishlistByUserId(userId, limit, offset) {
+  const SELECT =
+    "SELECT * FROM lego_sets JOIN users_fav on lego_sets.set_num = users_fav.set_num WHERE user_id = ? LIMIT ? OFFSET ?";
   try {
     const legoSets = await connection.query(SELECT, [userId, limit, offset]);
     return legoSets[0];
@@ -43,5 +55,6 @@ async function getAllSetsByUserId(userId, limit, offset) {
 export default {
   getSetsByMainThemeId,
   getTotalSetsByTheme,
-  getAllSetsByUserId,
+  getAllSetsInCollecByUserId,
+  getAllSetsInWishlistByUserId,
 };

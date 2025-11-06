@@ -1,7 +1,7 @@
 import connection from "../config/db.config.js";
 
-async function addSetToCollec(userId, setNum) {
-  const INSERT = `INSERT INTO users_collections (user_id, set_num) VALUES (?, ?)`;
+async function addSetToWishlist(userId, setNum) {
+  const INSERT = `INSERT INTO users_fav (user_id, set_num) VALUES (?, ?)`;
   try {
     const [{ affectedRows }] = await connection.query(INSERT, [userId, setNum]);
     return affectedRows;
@@ -12,19 +12,18 @@ async function addSetToCollec(userId, setNum) {
 }
 
 async function selectAllByUser(userId) {
-  const SELECT = "SELECT set_num FROM users_collections WHERE user_id = ?";
+  const SELECT = "SELECT set_num FROM users_fav WHERE user_id = ?";
   try {
-    const setsInCollection = await connection.query(SELECT, userId);
-    return setsInCollection[0];
+    const setsInWishlist = await connection.query(SELECT, userId);
+    return setsInWishlist[0];
   } catch (err) {
     console.log(err);
     return null;
   }
 }
 
-async function deleteSetFromCollection(userID, setNum) {
-  const DELETE =
-    "DELETE FROM users_collections WHERE user_id = ? AND set_num = ?";
+async function deleteSetFromWishlist(userID, setNum) {
+  const DELETE = "DELETE FROM users_fav WHERE user_id = ? AND set_num = ?";
   try {
     const [{ affectedRows }] = await connection.query(DELETE, [userID, setNum]);
     return affectedRows;
@@ -35,8 +34,7 @@ async function deleteSetFromCollection(userID, setNum) {
 }
 
 async function getTotalSetsByUser(userId) {
-  const SELECT =
-    "SELECT COUNT(*) AS total FROM users_collections WHERE user_id = ?";
+  const SELECT = "SELECT COUNT(*) AS total FROM users_fav WHERE user_id = ?";
   try {
     const [[{ total }]] = await connection.query(SELECT, userId);
     return total;
@@ -47,8 +45,8 @@ async function getTotalSetsByUser(userId) {
 }
 
 export default {
-  addSetToCollec,
+  addSetToWishlist,
   selectAllByUser,
-  deleteSetFromCollection,
+  deleteSetFromWishlist,
   getTotalSetsByUser,
 };
