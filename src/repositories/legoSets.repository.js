@@ -52,9 +52,35 @@ async function getAllSetsInWishlistByUserId(userId, limit, offset) {
   }
 }
 
+async function getLastThreeCollectedByUserId(userId) {
+  const SELECT =
+    "SELECT * FROM lego_sets JOIN users_collections on lego_sets.set_num = users_collections.set_num WHERE user_id = ? ORDER BY users_collections.add_date DESC LIMIT 3";
+  try {
+    const legoSets = await connection.query(SELECT, userId);
+    return legoSets[0];
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
+async function getLastFiveWishlistedByUserId(userId) {
+  const SELECT =
+    "SELECT * FROM lego_sets JOIN users_fav on lego_sets.set_num = users_fav.set_num WHERE user_id = ? ORDER BY users_fav.add_date DESC LIMIT 3";
+  try {
+    const legoSets = await connection.query(SELECT, userId);
+    return legoSets[0];
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
 export default {
   getSetsByMainThemeId,
   getTotalSetsByTheme,
   getAllSetsInCollecByUserId,
   getAllSetsInWishlistByUserId,
+  getLastThreeCollectedByUserId,
+  getLastFiveWishlistedByUserId,
 };

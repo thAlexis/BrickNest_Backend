@@ -74,9 +74,26 @@ async function getAllSetsByUser(req, res, next) {
   }
 }
 
+async function getLastThree(req, res, next) {
+  const userMail = req.user.mail;
+
+  try {
+    const lastThreeSets = await userCollectionService.getLastThreeInCollec(
+      userMail
+    );
+
+    return lastThreeSets
+      ? res.status(200).json(lastThreeSets)
+      : res.status(404).json({ message: "Aucun set trouvé" });
+  } catch (err) {
+    return res.status(500).json({ message: "Erreur serveur" });
+  }
+}
+
 export default {
   sendSetToCollection,
   getAllSetsNumInUserCollection,
   deleteSetFromCollection,
   getAllSetsByUser,
+  getLastThree,
 };

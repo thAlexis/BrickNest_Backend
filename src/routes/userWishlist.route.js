@@ -28,4 +28,10 @@ router.get(
   userWishlistController.getAllSetsByUser
 );
 
+router.get(
+  "/getlastfive",
+  jwtMiddlewares.verifyToken,
+  userWishlistController.getLastFive
+);
+
 export default router;

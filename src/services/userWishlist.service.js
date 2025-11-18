@@ -77,9 +77,27 @@ async function getSetsInWishlist(userMail, limit, offset) {
   }
 }
 
+async function getLastFiveInWishlist(userMail) {
+  try {
+    const { id } = await usersRepository.findUserByMail(userMail);
+
+    if (!id) return null;
+
+    const legoSets = await legoSetsRepository.getLastFiveWishlistedByUserId(id);
+
+    if (!legoSets) return null;
+
+    return legoSets;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
 export default {
   sendSetToWishlist,
   selectAllSetsByUser,
   deleteFromWishlist,
   getSetsInWishlist,
+  getLastFiveInWishlist,
 };

@@ -77,9 +77,27 @@ async function getSetsInCollection(userMail, limit, offset) {
   }
 }
 
+async function getLastThreeInCollec(userMail) {
+  try {
+    const { id } = await usersRepository.findUserByMail(userMail);
+
+    if (!id) return null;
+
+    const legoSets = await legoSetsRepository.getLastThreeCollectedByUserId(id);
+
+    if (!legoSets) return null;
+
+    return legoSets;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
 export default {
   sendSetToCollection,
   selectAllSetsByUser,
   deleteFromCollection,
   getSetsInCollection,
+  getLastThreeInCollec,
 };
