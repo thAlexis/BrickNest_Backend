@@ -13,13 +13,15 @@ function verifyToken(req, res, next) {
     req.user = jwtDecoded;
     next();
   } catch (err) {
-    return res.status(403).json({ message: "Le token est invalide" });
+    return res.status(403).json({ message: "La session a expiré" });
   }
 }
 
 function verifyAdmin(req, res, next) {
   if (req.user.role !== "admin") {
-    return res.status(403).json({ message: "Accès refusé" });
+    return res
+      .status(403)
+      .json({ message: "Hop hop hop, vous n'avez rien a faire là !" });
   }
   next();
 }
