@@ -13,4 +13,6 @@ router.post(
   newsPostsController.newPost
 );
 
+router.get("/:postid", newsPostsController.getOnePostById);
+
 export default router;
