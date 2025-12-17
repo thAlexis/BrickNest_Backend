@@ -19,9 +19,7 @@ function verifyToken(req, res, next) {
 
 function verifyAdmin(req, res, next) {
   if (req.user.role !== "admin") {
-    return res
-      .status(403)
-      .json({ message: "Hop hop hop, vous n'avez rien a faire là !" });
+    return res.status(403).json({ message: "Non autorisé" });
   }
   next();
 }
