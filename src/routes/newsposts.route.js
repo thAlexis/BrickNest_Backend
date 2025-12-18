@@ -13,6 +13,12 @@ router.post(
   newsPostsController.newPost
 );
 router.get("/lasttwo", newsPostsController.getLastTwo);
+router.put(
+  "/:postid",
+  jwtMiddlewares.verifyToken,
+  jwtMiddlewares.verifyAdmin,
+  newsPostsController.updatePost
+);
 router.delete(
   "/:postid",
   jwtMiddlewares.verifyToken,

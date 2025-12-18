@@ -50,4 +50,25 @@ async function deleteOneById(postId) {
   }
 }
 
-export default { addNewPost, getPostById, getLastTwo, deleteOneById };
+async function updateOneById(postId, title, content) {
+  const UPDATE = "UPDATE news_posts SET title = ?, content = ? WHERE id = ?";
+  try {
+    const [{ affectedRows }] = await connection.query(UPDATE, [
+      title,
+      content,
+      postId,
+    ]);
+    return affectedRows;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
+export default {
+  addNewPost,
+  getPostById,
+  getLastTwo,
+  deleteOneById,
+  updateOneById,
+};

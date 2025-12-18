@@ -59,4 +59,25 @@ async function deletePost(req, res, next) {
   }
 }
 
-export default { newPost, getOnePostById, getLastTwo, deletePost };
+async function updatePost(req, res, next) {
+  try {
+    const postId = req.params.postid;
+    const title = req.body.title;
+    const content = req.body.text;
+
+    const updated = await newsPostsRepository.updateOneById(
+      postId,
+      title,
+      content
+    );
+
+    return updated
+      ? res.status(200).json({ message: "Post supprimé" })
+      : res.status(404).json({ message: "Post non trouvé" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "erreur serveur" });
+  }
+}
+
+export default { newPost, getOnePostById, getLastTwo, deletePost, updatePost };
