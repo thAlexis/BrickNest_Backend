@@ -12,7 +12,13 @@ router.post(
   upload.single("image"),
   newsPostsController.newPost
 );
-
+router.get("/lasttwo", newsPostsController.getLastTwo);
+router.delete(
+  "/:postid",
+  jwtMiddlewares.verifyToken,
+  jwtMiddlewares.verifyAdmin,
+  newsPostsController.deletePost
+);
 router.get("/:postid", newsPostsController.getOnePostById);
 
 export default router;

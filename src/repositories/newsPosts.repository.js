@@ -28,4 +28,26 @@ async function getPostById(postId) {
   }
 }
 
-export default { addNewPost, getPostById };
+async function getLastTwo() {
+  const SELECT = "SELECT * FROM news_posts ORDER BY publish_date DESC LIMIT 2";
+  try {
+    const [rows] = await connection.query(SELECT);
+    return rows;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
+async function deleteOneById(postId) {
+  const DELETE = "DELETE FROM news_posts WHERE id = ?";
+  try {
+    const [{ affectedRows }] = await connection.query(DELETE, postId);
+    return affectedRows;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
+export default { addNewPost, getPostById, getLastTwo, deleteOneById };

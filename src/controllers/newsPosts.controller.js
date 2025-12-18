@@ -28,11 +28,35 @@ async function getOnePostById(req, res, next) {
   try {
     const postId = req.params.postid;
     const post = await newsPostsRepository.getPostById(postId);
-    return res.status(200).json(post);
+    return res.status(200).json(post[0]);
   } catch (err) {
     console.log(err);
-    return res.status(500);
+    return res.status(500).json({ message: "Erreur serveur" });
   }
 }
 
-export default { newPost, getOnePostById };
+async function getLastTwo(req, res, next) {
+  try {
+    const lastTwo = await newsPostsRepository.getLastTwo();
+    return res.status(200).json(lastTwo);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Erreur serveur" });
+  }
+}
+
+async function deletePost(req, res, next) {
+  try {
+    const postId = req.params.postid;
+    console.log(postId);
+    const deleted = await newsPostsRepository.deleteOneById(postId);
+    return deleted
+      ? res.status(200).json({ message: "Post supprimé" })
+      : res.status(404).json({ message: "Post non trouvé" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "erreur serveur" });
+  }
+}
+
+export default { newPost, getOnePostById, getLastTwo, deletePost };
