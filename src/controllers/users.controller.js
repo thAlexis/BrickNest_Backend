@@ -73,10 +73,14 @@ async function deleteAccount(req, res, next) {
 
 //////////////// MODIF PASSWORD SI ANCIEN PASSWORD EST OK ///////////
 async function modifyPassword(req, res, next) {
-  const userData = req.body;
+  const password = req.body.password;
+  const newPassword = req.body.newpassword;
+  const mail = req.user.mail;
   try {
     const passwordModified = await usersService.compareAndModifyPassword(
-      userData
+      password,
+      newPassword,
+      mail
     );
 
     return passwordModified
@@ -95,15 +99,19 @@ async function modifyPassword(req, res, next) {
 //////////////// MODIF INFOS COMPTE //////////////////
 async function modifyAccount(req, res, next) {
   const newAccountInfos = req.body;
-  newAccountInfos.newmail =
-    newAccountInfos.newmail == ""
-      ? newAccountInfos.mail
-      : newAccountInfos.newmail;
+  const mail = req.user.mail;
+  // newAccountInfos.newmail =
+  //   newAccountInfos.newmail == ""
+  //     ? newAccountInfos.mail
+  //     : newAccountInfos.newmail;
 
   try {
-    const accountModified = await usersRepository.updateUser(newAccountInfos);
+    const accountModified = await usersRepository.updateUser(
+      newAccountInfos,
+      mail
+    );
 
-    return accountModified.affectedRows > 0
+    return accountModified
       ? res.status(200).json({
           success: true,
           message: "Informations modifiées avec succès",

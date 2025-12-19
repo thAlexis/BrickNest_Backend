@@ -44,27 +44,30 @@ async function deleteUser(userId) {
 async function updatePassword(mail, newPassword) {
   const UPDATE = "UPDATE users SET password = ? WHERE mail = ?";
   try {
-    const result = await connection.query(UPDATE, [newPassword, mail]);
-    return result[0];
+    const [{ affectedRows }] = await connection.query(UPDATE, [
+      newPassword,
+      mail,
+    ]);
+    return affectedRows;
   } catch (err) {
     console.log(err);
     return null;
   }
 }
 
-async function updateUser(newAccountInfos) {
+async function updateUser(newAccountInfos, mail) {
   const UPDATE =
     "UPDATE users SET username = ?, firstname = ?, lastname = ?, mail = ? WHERE mail = ?";
   try {
     console.log(newAccountInfos);
-    const result = await connection.query(UPDATE, [
+    const [{ affectedRows }] = await connection.query(UPDATE, [
       newAccountInfos.username,
       newAccountInfos.firstname,
       newAccountInfos.lastname,
       newAccountInfos.newmail,
-      newAccountInfos.mail,
+      mail,
     ]);
-    return result[0];
+    return affectedRows;
   } catch (err) {
     console.log(err);
     return null;
