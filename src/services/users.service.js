@@ -52,24 +52,22 @@ async function compareUserPassword(loginId) {
   }
 }
 
-async function compareAndModifyPassword(userData) {
+async function compareAndModifyPassword(password, newPassword, mail) {
   try {
-    const rigthPassword = await compareUserPassword(userData);
+    const rigthPassword = await compareUserPassword(password);
 
     if (!rigthPassword) {
       return null;
     }
 
-    const hashedNewPassword = await useBcrypt.hashPassword(
-      userData.newpassword
-    );
+    const hashedNewPassword = await useBcrypt.hashPassword(newPassword);
 
     const passwordUpdated = await usersRepository.updatePassword(
-      userData.mail,
+      mail,
       hashedNewPassword
     );
 
-    return passwordUpdated.affectedRows > 0 ? true : false;
+    return passwordUpdated;
   } catch (err) {
     console.log(err);
     return null;

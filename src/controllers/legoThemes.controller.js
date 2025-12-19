@@ -7,10 +7,10 @@ async function getMainThemes(req, res, next) {
     console.log(mainThemes);
     return mainThemes
       ? res.status(200).json({ mainThemes })
-      : res.status(400).json({ message: "Aucun thème trouvé" });
+      : res.status(404).json({ message: "Aucun thème trouvé" });
   } catch (error) {
     console.log(error);
-    return res.status(400).json({ message: "Erreur serveur" });
+    return res.status(500).json({ message: "Erreur serveur" });
   }
 }
 
