@@ -13,6 +13,35 @@ async function hashNewUserPassword(newUser) {
   }
 }
 
+async function newTokenUpdated(newAccountInfos, mail, role) {
+  try {
+    const accountModified = await usersRepository.updateUser(
+      newAccountInfos,
+      mail
+    );
+
+    if (accountModified) {
+      const payload = {
+        username: newAccountInfos.username,
+        mail: newAccountInfos.mail,
+        firstname: newAccountInfos.firstname,
+        lastname: newAccountInfos.lastname,
+        role: role,
+      };
+
+      const token = jwt.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: "2h",
+      });
+
+      return token;
+    }
+    return null;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
 async function compareUserPassword(loginId) {
   try {
     const user = await usersRepository.findUserByMail(loginId.mail);
@@ -25,8 +54,6 @@ async function compareUserPassword(loginId) {
       loginId.password,
       user.password
     );
-
-    console.log(rigthPassword);
 
     if (rigthPassword) {
       const payload = {
@@ -41,8 +68,6 @@ async function compareUserPassword(loginId) {
         expiresIn: "2h",
       });
 
-      console.log(token);
-
       return token;
     }
     return null;
@@ -54,7 +79,16 @@ async function compareUserPassword(loginId) {
 
 async function compareAndModifyPassword(password, newPassword, mail) {
   try {
-    const rigthPassword = await compareUserPassword(password);
+    const user = await usersRepository.findUserByMail(mail);
+
+    if (!user) {
+      return null;
+    }
+
+    const rigthPassword = await useBcrypt.verifyPassword(
+      password,
+      user.password
+    );
 
     if (!rigthPassword) {
       return null;
@@ -78,4 +112,5 @@ export default {
   hashNewUserPassword,
   compareUserPassword,
   compareAndModifyPassword,
+  newTokenUpdated,
 };

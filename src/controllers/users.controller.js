@@ -54,10 +54,10 @@ async function loginUser(req, res, next) {
 
 ///////////////// SUPPRESSION DE COMPTE ////////////////
 async function deleteAccount(req, res, next) {
-  const userId = req.params.id;
+  const mail = req.user.mail;
   try {
-    const deleted = await usersRepository.deleteUser(userId);
-    return deleted.affectedRows > 0
+    const deleted = await usersRepository.deleteUser(mail);
+    return deleted
       ? res
           .status(200)
           .json({ success: true, message: "Le compte a été supprimé" })
@@ -89,7 +89,7 @@ async function modifyPassword(req, res, next) {
           .json({ success: true, message: "Mot de passe modifié avec succès" })
       : res
           .status(400)
-          .json({ success: false, message: "La modification a échoué" });
+          .json({ success: false, message: "Mot de passe incorrect" });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ succes: false, message: "Erreur serveur" });
@@ -100,21 +100,24 @@ async function modifyPassword(req, res, next) {
 async function modifyAccount(req, res, next) {
   const newAccountInfos = req.body;
   const mail = req.user.mail;
+  const role = req.user.role;
   // newAccountInfos.newmail =
   //   newAccountInfos.newmail == ""
   //     ? newAccountInfos.mail
   //     : newAccountInfos.newmail;
 
   try {
-    const accountModified = await usersRepository.updateUser(
+    const newToken = await usersService.newTokenUpdated(
       newAccountInfos,
-      mail
+      mail,
+      role
     );
 
-    return accountModified
+    return newToken
       ? res.status(200).json({
           success: true,
           message: "Informations modifiées avec succès",
+          newToken: newToken,
         })
       : res
           .status(400)

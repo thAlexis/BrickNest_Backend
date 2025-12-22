@@ -30,11 +30,11 @@ async function addNewUser(newUser, hashedPassword) {
   }
 }
 
-async function deleteUser(userId) {
-  const DELETE = "DELETE FROM users WHERE id = ?";
+async function deleteUser(mail) {
+  const DELETE = "DELETE FROM users WHERE mail = ?";
   try {
-    const result = await connection.query(DELETE, userId);
-    return result[0];
+    const [{ affectedRows }] = await connection.query(DELETE, mail);
+    return affectedRows;
   } catch (err) {
     console.log(err);
     return null;
@@ -64,7 +64,7 @@ async function updateUser(newAccountInfos, mail) {
       newAccountInfos.username,
       newAccountInfos.firstname,
       newAccountInfos.lastname,
-      newAccountInfos.newmail,
+      newAccountInfos.mail,
       mail,
     ]);
     return affectedRows;

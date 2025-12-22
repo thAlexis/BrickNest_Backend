@@ -43,7 +43,7 @@ CREATE TABLE users_fav (
   user_id INT, 
   set_num VARCHAR(30), 
   add_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (set_num) REFERENCES lego_sets(set_num)
 )
 
@@ -51,7 +51,7 @@ CREATE TABLE users_collections (
   user_id INT,
   set_num VARCHAR(30),
   add_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (set_num) REFERENCES lego_sets(set_num)
 )
 
