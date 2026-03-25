@@ -23,10 +23,10 @@ app.use(express.static("public"));
 
 app.use(
   cors({
-    origin: FRONTEND_URL,
+    origin: process.env.FRONTEND_URL,
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: ["Content-Type", "Accept", "Authorization"],
-  })
+  }),
 );
 
 /////////// Use Routes ////////////
