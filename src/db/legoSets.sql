@@ -18,13 +18,13 @@ CREATE TABLE lego_sets (
   img_link VARCHAR(300)
 );
 
-LOAD DATA LOCAL INFILE '/Users/alexisthullier/Desktop/BrickNest/sets.csv'
+LOAD DATA LOCAL INFILE 'C:/Users/Thull/Desktop/BrickNest/Backend/src/db/sets.csv'
 INTO TABLE lego_sets
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n';
 
 
-LOAD DATA LOCAL INFILE '/Users/alexisthullier/Desktop/BrickNest/themes.csv'
+LOAD DATA LOCAL INFILE 'C:/Users/Thull/Desktop/BrickNest/Backend/src/db/themes.csv'
 INTO TABLE lego_themes
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n';
@@ -32,7 +32,9 @@ LINES TERMINATED BY '\n';
 CREATE TABLE users (
   id INT PRIMARY KEY AUTO_INCREMENT,
   username VARCHAR(30),
-  email VARCHAR(128),
+  firstname VARCHAR(30),
+  lastname VARCHAR(30),
+  mail VARCHAR(128) UNIQUE,
   password VARCHAR(128),
   role VARCHAR(20)
 );
@@ -40,14 +42,16 @@ CREATE TABLE users (
 CREATE TABLE users_fav (
   user_id INT, 
   set_num VARCHAR(30), 
-  FOREIGN KEY (user_id) REFERENCES users(id),
+  add_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (set_num) REFERENCES lego_sets(set_num)
 )
 
 CREATE TABLE users_collections (
   user_id INT,
   set_num VARCHAR(30),
-  FOREIGN KEY (user_id) REFERENCES users(id),
+  add_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (set_num) REFERENCES lego_sets(set_num)
 )
 
@@ -56,8 +60,7 @@ CREATE TABLE news_posts (
   title VARCHAR(255),
   image VARCHAR(300),
   content MEDIUMTEXT, 
-  author_id INT,
+  author VARCHAR(30),
   publish_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-  update_date DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (author_id) REFERENCES users(id)
+  update_date DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )

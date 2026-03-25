@@ -1,0 +1,99 @@
+import userWishlistService from "../services/userWishlist.service.js";
+
+async function sendSetToWishlist(req, res, next) {
+  const userMail = req.user.mail;
+  const setNum = req.params.setnum;
+  try {
+    const setIsAdded = await userWishlistService.sendSetToWishlist(
+      userMail,
+      setNum
+    );
+
+    return setIsAdded
+      ? res.status(201).json({ message: "Le set à été correctement ajouté" })
+      : res.status(400).json({ message: "Le set n'a pas pus être ajouté" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+}
+
+async function getAllSetsNumInUserWishlist(req, res, next) {
+  const userMail = req.user.mail;
+  try {
+    const allSets = await userWishlistService.selectAllSetsByUser(userMail);
+
+    return allSets
+      ? res.status(200).json(allSets)
+      : res.status(404).json({ message: "Aucun set trouvé" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Erreur serveur" });
+  }
+}
+
+async function deleteSetFromWishlist(req, res, next) {
+  const userMail = req.user.mail;
+  const setNum = req.params.setnum;
+  try {
+    const isDeleted = await userWishlistService.deleteFromWishlist(
+      userMail,
+      setNum
+    );
+
+    return isDeleted
+      ? res.status(200).json({ message: "Set supprimé de la collection" })
+      : res.statut(404).json({ message: "Le set n'a pas été trouvé" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Erreur serveur" });
+  }
+}
+
+async function getAllSetsByUser(req, res, next) {
+  const userMail = req.user.mail;
+  const page = Number(req.query.page) || 1;
+  const limit = 12;
+  const offset = (page - 1) * limit;
+
+  try {
+    const [legoSets, total, nbPages] =
+      await userWishlistService.getSetsInWishlist(userMail, limit, offset);
+
+    console.log(legoSets);
+    return legoSets
+      ? res.status(200).json({
+          page: page,
+          nbPages: nbPages,
+          totalSets: total,
+          sets: legoSets,
+        })
+      : res.status(404).json({ message: "Aucun set trouvé" });
+  } catch (err) {
+    return res.status(500).json({ message: "Erreur serveur" });
+  }
+}
+
+async function getLastFive(req, res, next) {
+  const userMail = req.user.mail;
+
+  try {
+    const lastFiveSets = await userWishlistService.getLastFiveInWishlist(
+      userMail
+    );
+
+    return lastFiveSets
+      ? res.status(200).json(lastFiveSets)
+      : res.status(404).json({ message: "Aucun set trouvé" });
+  } catch (err) {
+    return res.status(500).json({ message: "Erreur serveur" });
+  }
+}
+
+export default {
+  sendSetToWishlist,
+  getAllSetsNumInUserWishlist,
+  deleteSetFromWishlist,
+  getAllSetsByUser,
+  getLastFive,
+};
