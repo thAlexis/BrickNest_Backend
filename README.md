@@ -54,7 +54,7 @@ Avant de lancer le serveur, vous devez préparer la base de données MySQL :
 Assurez-vous que votre serveur MySQL est lancé.
 
 Connectez-vous à MySQL et créez la base de données correspondant à la variable DB_NAME
-Lancez le script legoSets.sql;
+Lancez le script src/db/legoSets.sql;
 
 🏃‍♂️ Démarrage
 Une fois l'installation et la configuration terminées, vous pouvez lancer le serveur.
@@ -63,11 +63,64 @@ nodemon .
 
 Le serveur sera accessible à l'adresse : http://localhost:3000
 
-🛠️ Stack Technique
-Runtime : Node.js
+## 🌍 Déploiement en Production (Vercel Serverless)
 
-Framework : Express.js
+Cette API est conçue pour être déployée sur **Vercel** en tant que fonction Serverless.
 
-Base de données : MySQL
+### ⚠️ Prérequis Base de Données
 
-Authentification : JSON Web Token (JWT)
+Vercel étant un environnement cloud, il ne peut pas accéder à une base de données locale (`localhost`).
+La base de données MySQL doit être hébergée sur un service cloud accessible publiquement (ex: **Aiven**, **PlanetScale**, **Railway** ou **Supabase**).
+
+### 1. Configuration Serverless (`vercel.json`)
+
+Un fichier de configuration `vercel.json` est requis à la racine pour rediriger le trafic HTTP vers l'application Express :
+
+```json
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "index.js"
+    }
+  ]
+}
+```
+
+**🛠️ Stack Technique**
+*   Runtime : Node.js
+*   Framework : Express.js
+*   Base de données : MySQL
+*   Authentification : JSON Web Token (JWT)
+
+### 2. Procédure de Déploiement (Vercel)
+
+1.  **Pousser le code sur GitHub** :
+    *   Assurez-vous que votre projet est hébergé sur un dépôt GitHub (Public ou Privé).
+
+2.  **Importer dans Vercel** :
+    *   Connectez-vous à [Vercel](https://vercel.com).
+    *   Cliquez sur **Add New... > Project**.
+    *   Sélectionnez votre dépôt `BrickNest_Backend` et cliquez sur **Import**.
+
+3.  **Configurer les Variables d'Environnement** :
+    *   ⚠️ **Crucial** : Dans l'écran "Configure Project", déroulez la section **Environment Variables**.
+    *   Ajoutez toutes les variables définies dans votre `.env` local, mais avec les **valeurs de production** (votre base de données cloud) :
+        *   `DB_HOST` : (Ex: `aws.connect.psdb.cloud`)
+        *   `DB_USER` : (Votre utilisateur de prod)
+        *   `DB_PASSWORD` : (Votre mot de passe de prod)
+        *   `DB_NAME` : (Nom de la base de prod)
+        *   `JWT_SECRET` : (Générez une clé forte pour la prod)
+        *   `JWT_EXPIRES` : `24h`
+    *   *Note : Ne définissez PAS la variable `PORT`, Vercel s'en charge.*
+
+4.  **Lancer le Déploiement** :
+    *   Cliquez sur **Deploy**.
+    *   Une fois terminé, votre API sera accessible via le lien fourni (ex: `https://bricknest-backend.vercel.app`).

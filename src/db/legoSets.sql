@@ -1,6 +1,8 @@
 DROP DATABASE IF EXISTS brickNest_db;
 CREATE DATABASE brickNest_db;
-USE brickNest_DB;
+USE brickNest_db;
+
+SET GLOBAL local_infile = 1;
 
 CREATE TABLE lego_themes (
   theme_id INT PRIMARY KEY,
@@ -18,24 +20,24 @@ CREATE TABLE lego_sets (
   img_link VARCHAR(300)
 );
 
-LOAD DATA LOCAL INFILE 'C:/Users/Thull/Desktop/BrickNest/Backend/src/db/sets.csv'
+LOAD DATA LOCAL INFILE 'C:/Users/Thull/Documents/BrickNest/Backend/src/db/sets.csv'
 INTO TABLE lego_sets
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n';
 
 
-LOAD DATA LOCAL INFILE 'C:/Users/Thull/Desktop/BrickNest/Backend/src/db/themes.csv'
+LOAD DATA LOCAL INFILE 'C:/Users/Thull/Documents/BrickNest/Backend/src/db/themes.csv'
 INTO TABLE lego_themes
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n';
 
 CREATE TABLE users (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  username VARCHAR(30),
-  firstname VARCHAR(30),
-  lastname VARCHAR(30),
-  mail VARCHAR(128) UNIQUE,
-  password VARCHAR(128),
+  username VARCHAR(30) NOT NULL,
+  firstname VARCHAR(30) NOT NULL,
+  lastname VARCHAR(30) NOT NULL,
+  mail VARCHAR(128) UNIQUE NOT NULL,
+  password VARCHAR(128) NOT NULL,
   role VARCHAR(20)
 );
 

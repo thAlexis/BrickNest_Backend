@@ -4,7 +4,6 @@ async function findUserByMail(mail) {
   const SELECT = "SELECT * FROM users WHERE mail = ?";
   try {
     const found = await connection.query(SELECT, mail);
-    console.log(found[0]);
     return found[0][0] || null;
   } catch (error) {
     console.log(error);
